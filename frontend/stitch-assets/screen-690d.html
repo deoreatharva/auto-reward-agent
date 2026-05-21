@@ -1,0 +1,409 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AutoReward - Web3 Giving Without the Gas Pain</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "on-primary": "#31009a",
+                        "inverse-surface": "#e3e1ef",
+                        "secondary-fixed-dim": "#00dce5",
+                        "outline": "#938ea1",
+                        "tertiary-fixed-dim": "#ecb2ff",
+                        "on-tertiary-container": "#480063",
+                        "surface-tint": "#cabeff",
+                        "on-error": "#690005",
+                        "secondary-container": "#00f4fe",
+                        "secondary-fixed": "#63f7ff",
+                        "surface-container-highest": "#33343e",
+                        "primary-fixed-dim": "#cabeff",
+                        "surface-bright": "#383843",
+                        "on-surface": "#e3e1ef",
+                        "on-tertiary-fixed-variant": "#74009f",
+                        "surface": "#12131c",
+                        "on-primary-fixed-variant": "#4816cb",
+                        "outline-variant": "#484555",
+                        "on-tertiary": "#520071",
+                        "inverse-on-surface": "#2f303a",
+                        "primary": "#cabeff",
+                        "secondary": "#e6feff",
+                        "on-surface-variant": "#c9c4d8",
+                        "on-tertiary-fixed": "#320047",
+                        "background": "#12131c",
+                        "surface-container-low": "#1a1b24",
+                        "primary-fixed": "#e6deff",
+                        "primary-container": "#947dff",
+                        "tertiary-container": "#cf5cff",
+                        "on-secondary-fixed-variant": "#004f53",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e3e1ef",
+                        "on-secondary": "#003739",
+                        "tertiary": "#ecb2ff",
+                        "on-secondary-container": "#006c71",
+                        "inverse-primary": "#603ce2",
+                        "on-primary-fixed": "#1c0062",
+                        "surface-variant": "#33343e",
+                        "surface-container": "#1e1f29",
+                        "surface-dim": "#12131c",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0d0e17",
+                        "surface-container-high": "#282933",
+                        "tertiary-fixed": "#f8d8ff",
+                        "on-primary-container": "#2a0088",
+                        "on-secondary-fixed": "#002021"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"],
+                        "display-lg-mobile": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .glass-card {
+            background: rgba(18, 19, 28, 0.3);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1.5px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0), rgba(255,255,255,0.05));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(160px);
+            opacity: 0.15;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        #globe-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            background: radial-gradient(circle at center, #12131c 0%, #0d0e17 100%);
+        }
+
+        .animate-float {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(2deg); }
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-background font-body-md selection:bg-primary/30 selection:text-primary overflow-x-hidden min-h-screen flex flex-col">
+<!-- 3D Background Globe -->
+<canvas data-engine="three.js r160" id="globe-canvas" width="5388" height="3696" style="width: 2694px; height: 1848px;"></canvas>
+<!-- Ambient Background Decorations -->
+<div class="ambient-glow bg-primary -top-48 -left-48" id="glow-1" style="transform: translate(15.902px, 9.28571px);"></div>
+<div class="ambient-glow bg-tertiary -bottom-48 -right-48" id="glow-2" style="transform: translate(-21.2027px, -12.381px);"></div>
+<div class="ambient-glow bg-secondary top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.08]" id="glow-3" style="transform: translate(-39.3987%, -43.8095%);"></div>
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 border-b border-white/5 bg-surface/10 backdrop-blur-xl transition-all duration-500">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto py-5 md:py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl font-bold" data-icon="bolt">bolt</span>
+<span class="font-bold tracking-tight text-on-surface font-headline-lg text-2xl md:text-3xl">AutoReward</span>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-on-surface-variant hover:text-primary transition-all duration-300 text-base font-medium" href="#">Ecosystem</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-300 text-base font-medium" href="#">How it Works</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-300 text-base font-medium" href="#">UGF Docs</a>
+</nav>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center pt-32 pb-24 px-margin-mobile md:px-margin-desktop relative">
+<!-- Hero Section Container -->
+<div class="w-full glass-card rounded-[48px] md:rounded-[64px] text-center shadow-[0_64px_128px_-32px_rgba(0,0,0,0.8)] animate-in fade-in slide-in-from-bottom-12 duration-1000 z-10 max-w-7xl p-16 md:p-24 lg:px-24 max-w-[1200px] max-w-screen-2xl lg:py-64">
+<!-- Badge / Status -->
+<div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary md:mb-10 mb-12">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-label-sm text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold">Donate on-chain. Get a badge. Zero ETH needed.</span>
+</div>
+<!-- Main Headline -->
+<h1 class="font-display-lg text-4xl md:text-6xl lg:text-[80px] lg:leading-[88px] mb-6 md:mb-10 tracking-tight lg:text-[96px] lg:leading-[104px]">
+            Web3 Giving, <span class="text-primary italic font-medium">Without the Gas Pain</span>
+</h1>
+<!-- Subheadline -->
+<p class="font-body-lg text-lg text-on-surface-variant md:mb-12 mx-auto leading-relaxed opacity-90 md:text-2xl max-w-3xl mb-14">
+            Connect your wallet and donate to a cause. Our agent automatically mints you an NFT badge — all without needing ETH for gas.
+        </p>
+<!-- CTA Group -->
+<div class="flex flex-col sm:flex-row gap-5 md:gap-6 justify-center items-center mb-12 md:mb-16">
+<button class="w-full sm:w-auto bg-gradient-to-r from-primary to-tertiary text-on-primary font-bold py-4 px-12 md:py-5 md:px-14 text-lg md:text-xl rounded-2xl hover:shadow-[0_0_60px_rgba(202,190,255,0.4)] transition-all duration-500 transform hover:-translate-y-1.5 active:scale-95">
+                Start Giving Now
+            </button>
+<button class="w-full sm:w-auto bg-white/5 border border-white/10 text-on-surface font-bold py-4 px-12 md:py-5 md:px-14 text-lg md:text-xl rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all duration-500 transform hover:-translate-y-1.5 active:scale-95">
+                Connect Wallet
+            </button>
+</div>
+<!-- Tagline -->
+<div class="pt-8 border-t border-white/5">
+<p class="font-label-sm text-[10px] md:text-[11px] text-on-surface-variant opacity-50 tracking-[0.25em] uppercase mb-8">Powered by UGF — Universal Gas Framework &amp; Syntax Squad</p>
+<div class="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl" data-icon="hub">hub</span>
+<span class="font-bold text-lg md:text-xl tracking-tight">BASE</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl" data-icon="security">security</span>
+<span class="font-bold text-lg md:text-xl tracking-tight">SAFE</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl" data-icon="token">token</span>
+<span class="font-bold text-lg md:text-xl tracking-tight">UGF Core</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative Elements (Relative to main so they scroll/position better) -->
+<div class="absolute top-[15%] left-4 lg:left-8 opacity-40 pointer-events-none animate-float hidden xl:block">
+<img alt="NFT Badge" class="w-48 h-48 rounded-[24%] rotate-12 blur-[1px] shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJR3jpSEwzR22qLYGLQGfXECtFh9VYczQjx2W_CJ-jb0uGM6XmX0p3PzOCwUGKaUVQpg8gFICxWclb_7Ze2mb5slxPJQG6-OOdF7c5XzaAZca21WXgcz_OU7VOjawervvqMHkpvmsI7Eai6RKQZus-JX_N5VpEyX54xM_IxZ65c8qsJH3FmOZEExul52LiV725lLO580o8azqG-bcrtOnkawP1KFb53MBTunxD50-QfxcOWskN3msSuUyc6JlejhMuBheAq4VkVw">
+</div>
+<div class="absolute bottom-[20%] right-4 lg:right-8 opacity-40 pointer-events-none animate-float hidden xl:block" style="animation-delay: -3s;">
+<img alt="Floating Gradient" class="w-64 h-64 rounded-full blur-2xl opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN9E7KOrk13Xru_HZTBIOhEugSNTYLWFu-F2ZbecPfmLg35mClQh69Yg-kdAyE1-KUeoekehSsUYlNhSyifkR9z2DHimrp-mL7nexIFNWpvUHWaMRvW78be0wZ5WgxB7FUEYNqqTTwO8UjWqZQLaD8RJjNl7PvSXz0kuBaf0cqcrq7jEhjnM-MdjgzglnAvSlWPAVcvv_zWMImyXxKV48EGfYmskpG4CNJbwOiRGe0iHmZBvRWclrsDRcYDYZnaCXeBgZ6vFgnmQ">
+</div>
+</main>
+<!-- Footer Component - Separated from Main with clear spacing -->
+<footer class="w-full mt-12 bg-transparent relative z-10">
+<div class="backdrop-blur-md bg-surface/40 border-t border-white/10 py-12">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl font-bold" data-icon="bolt">bolt</span>
+<span class="font-headline-lg text-2xl font-bold text-on-surface">AutoReward</span>
+</div>
+<p class="font-body-md text-on-surface-variant max-w-sm opacity-70">
+                    The Universal Gas Framework (UGF) enables friction-less decentralized giving and secure on-chain identity for everyone.
+                </p>
+</div>
+<div class="flex flex-col items-start md:items-end gap-6">
+<nav class="flex flex-wrap gap-8">
+<a class="font-label-sm text-xs text-on-surface-variant hover:text-primary transition-all duration-300 tracking-wider" href="#">Network Status</a>
+<a class="font-label-sm text-xs text-on-surface-variant hover:text-primary transition-all duration-300 tracking-wider" href="#">Terms of Service</a>
+<a class="font-label-sm text-xs text-on-surface-variant hover:text-primary transition-all duration-300 tracking-wider" href="#">Privacy Policy</a>
+</nav>
+</div>
+</div>
+</div>
+<div class="py-6 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex justify-start md:justify-end border-t border-white/5">
+<p class="font-label-sm text-[10px] md:text-xs text-secondary/60 tracking-widest uppercase">
+            © 2026 AutoReward. Built with <span class="text-primary">♥</span> by UGF Core.
+        </p>
+</div>
+</footer>
+<script>
+    // Three.js Globe Implementation
+    (function() {
+        const canvas = document.getElementById('globe-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 100;
+
+        // Colors
+        const primaryPurple = 0x947dff;
+        const darkSurface = 0x0d0e17;
+
+        // Base Globe
+        const geometry = new THREE.SphereGeometry(42, 64, 64);
+        const material = new THREE.MeshBasicMaterial({
+            color: darkSurface,
+            transparent: true,
+            opacity: 0.95
+        });
+        const globe = new THREE.Mesh(geometry, material);
+        scene.add(globe);
+
+        // Wireframe Grid
+        const wireframeGeometry = new THREE.SphereGeometry(42.2, 48, 48);
+        const wireframeMaterial = new THREE.MeshBasicMaterial({
+            color: primaryPurple,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.35
+        });
+        const wireframe = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
+        globe.add(wireframe);
+
+        // Network Layer
+        const particlesCount = 180;
+        const positions = new Float32Array(particlesCount * 3);
+        const particleGeometry = new THREE.BufferGeometry();
+        const networkRadius = 48;
+        
+        for(let i = 0; i < particlesCount; i++) {
+            const phi = Math.acos(-1 + (2 * i) / particlesCount);
+            const theta = Math.sqrt(particlesCount * Math.PI) * phi;
+            
+            const x = networkRadius * Math.cos(theta) * Math.sin(phi);
+            const y = networkRadius * Math.sin(theta) * Math.sin(phi);
+            const z = networkRadius * Math.cos(phi);
+            
+            positions[i * 3] = x;
+            positions[i * 3 + 1] = y;
+            positions[i * 3 + 2] = z;
+        }
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({
+            color: primaryPurple,
+            size: 1.2,
+            transparent: true,
+            opacity: 0.9,
+            blending: THREE.AdditiveBlending
+        });
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        
+        const lineMaterial = new THREE.LineBasicMaterial({ 
+            color: primaryPurple, 
+            transparent: true, 
+            opacity: 0.25,
+            blending: THREE.AdditiveBlending
+        });
+        const lineGeometry = new THREE.BufferGeometry();
+        const linePositions = [];
+        
+        for(let i = 0; i < particlesCount; i++) {
+            for(let j = i + 1; j < particlesCount; j++) {
+                const dist = Math.sqrt(
+                    Math.pow(positions[i*3] - positions[j*3], 2) +
+                    Math.pow(positions[i*3+1] - positions[j*3+1], 2) +
+                    Math.pow(positions[i*3+2] - positions[j*3+2], 2)
+                );
+                if(dist < 18) {
+                    linePositions.push(positions[i*3], positions[i*3+1], positions[i*3+2]);
+                    linePositions.push(positions[j*3], positions[j*3+1], positions[j*3+2]);
+                }
+            }
+        }
+        lineGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions), 3));
+        const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+        
+        const networkGroup = new THREE.Group();
+        networkGroup.add(particles);
+        networkGroup.add(lines);
+        scene.add(networkGroup);
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        let mouseX = 0;
+        let mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            globe.rotation.y += 0.002; 
+            networkGroup.rotation.y += 0.0035;
+            networkGroup.rotation.x += 0.001;
+            scene.rotation.y += (mouseX * 0.15 - scene.rotation.y) * 0.05;
+            scene.rotation.x += (mouseY * 0.15 - scene.rotation.x) * 0.05;
+            renderer.render(scene, camera);
+        }
+        animate();
+    })();
+
+    window.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) - 0.5;
+        const y = (e.clientY / window.innerHeight) - 0.5;
+        const glow1 = document.getElementById('glow-1');
+        const glow2 = document.getElementById('glow-2');
+        const glow3 = document.getElementById('glow-3');
+        if(glow1) glow1.style.transform = `translate(${x * 60}px, ${y * 60}px)`;
+        if(glow2) glow2.style.transform = `translate(${x * -80}px, ${y * -80}px)`;
+        if(glow3) glow3.style.transform = `translate(${-50 + (x * 40)}%, ${-50 + (y * 40)}%)`;
+    });
+
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 20) {
+            header.classList.add('py-3', 'bg-surface/80', 'border-white/10');
+            header.classList.remove('py-5', 'bg-surface/10', 'border-white/5');
+        } else {
+            header.classList.add('py-5', 'bg-surface/10', 'border-white/5');
+            header.classList.remove('py-3', 'bg-surface/80', 'border-white/10');
+        }
+    });
+</script>
+
+
+</body></html>

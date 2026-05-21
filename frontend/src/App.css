@@ -1,118 +1,168 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
 
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: #0a0a0f;
-  color: #e8e8f0;
-  min-height: 100vh;
+/* ══════════════════════════════════════════════════════════════════════
+   AutoReward — Aetheric Web3 Design System
+   Exact match from Stitch screen: "AutoReward - Layout Separation Fix"
+   ══════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  --color-error-container: #93000a;
+  --color-on-primary: #31009a;
+  --color-inverse-surface: #e3e1ef;
+  --color-secondary-fixed-dim: #00dce5;
+  --color-outline: #938ea1;
+  --color-tertiary-fixed-dim: #ecb2ff;
+  --color-on-tertiary-container: #480063;
+  --color-surface-tint: #cabeff;
+  --color-on-error: #690005;
+  --color-secondary-container: #00f4fe;
+  --color-secondary-fixed: #63f7ff;
+  --color-surface-container-highest: #33343e;
+  --color-primary-fixed-dim: #cabeff;
+  --color-surface-bright: #383843;
+  --color-on-surface: #e3e1ef;
+  --color-on-tertiary-fixed-variant: #74009f;
+  --color-surface: #12131c;
+  --color-on-primary-fixed-variant: #4816cb;
+  --color-outline-variant: #484555;
+  --color-on-tertiary: #520071;
+  --color-inverse-on-surface: #2f303a;
+  --color-primary: #cabeff;
+  --color-secondary: #e6feff;
+  --color-on-surface-variant: #c9c4d8;
+  --color-on-tertiary-fixed: #320047;
+  --color-background: #12131c;
+  --color-surface-container-low: #1a1b24;
+  --color-primary-fixed: #e6deff;
+  --color-primary-container: #947dff;
+  --color-tertiary-container: #cf5cff;
+  --color-on-secondary-fixed-variant: #004f53;
+  --color-on-error-container: #ffdad6;
+  --color-on-background: #e3e1ef;
+  --color-on-secondary: #003739;
+  --color-tertiary: #ecb2ff;
+  --color-on-secondary-container: #006c71;
+  --color-inverse-primary: #603ce2;
+  --color-on-primary-fixed: #1c0062;
+  --color-surface-variant: #33343e;
+  --color-surface-container: #1e1f29;
+  --color-surface-dim: #12131c;
+  --color-error: #ffb4ab;
+  --color-surface-container-lowest: #0d0e17;
+  --color-surface-container-high: #282933;
+  --color-tertiary-fixed: #f8d8ff;
+  --color-on-primary-container: #2a0088;
+  --color-on-secondary-fixed: #002021;
+
+  --spacing-gutter: 24px;
+  --spacing-unit: 8px;
+  --spacing-container-max: 1280px;
+  --spacing-margin-desktop: 64px;
+  --spacing-margin-mobile: 20px;
+
+  --font-body-lg: "Hanken Grotesk", sans-serif;
+  --font-body-md: "Hanken Grotesk", sans-serif;
+  --font-headline-md: "Sora", sans-serif;
+  --font-display-lg-mobile: "Sora", sans-serif;
+  --font-headline-lg: "Sora", sans-serif;
+  --font-display-lg: "Sora", sans-serif;
+  --font-label-sm: "JetBrains Mono", monospace;
 }
 
-/* ── Header ─────────────────────────────── */
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.2rem 2rem;
-  border-bottom: 1px solid #1e1e2e;
-  background: #0d0d18;
+/* ── Stitch custom classes (exact) ───────────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
-.logo { font-size: 1.4rem; font-weight: 700; color: #7c6ef7; }
-.tagline { font-size: 0.85rem; color: #888; flex: 1; text-align: center; }
 
-/* ── Main ───────────────────────────────── */
-.app-main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-
-.hero { text-align: center; padding: 4rem 2rem; }
-.hero h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 1rem; }
-.highlight { color: #7c6ef7; }
-.hero p { color: #aaa; font-size: 1.1rem; margin-bottom: 0.6rem; }
-.powered-by { font-size: 0.85rem; color: #555; margin-top: 1rem; }
-
-.dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-
-/* ── Cards ──────────────────────────────── */
-.donation-form, .badge-gallery, .success-box {
-  background: #12121f;
-  border: 1px solid #1e1e2e;
-  border-radius: 16px;
-  padding: 2rem;
+.glass-card {
+  background: rgba(18, 19, 28, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
 }
-h2 { font-size: 1.3rem; margin-bottom: 0.4rem; }
-.subtitle { color: #666; font-size: 0.85rem; margin-bottom: 1.5rem; }
-
-/* ── Causes Grid ────────────────────────── */
-.causes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem; }
-.cause-card {
-  border: 1px solid #2a2a3e;
-  border-radius: 10px;
-  padding: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0), rgba(255,255,255,0.05));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
-.cause-card:hover { border-color: #7c6ef7; background: #16162a; }
-.cause-card.selected { border-color: #7c6ef7; background: #1a1a30; box-shadow: 0 0 0 2px #7c6ef733; }
-.cause-label { font-weight: 600; margin-bottom: 0.3rem; }
-.cause-desc { font-size: 0.8rem; color: #888; }
 
-/* ── Buttons ────────────────────────────── */
-.btn-primary {
+.ambient-glow {
+  position: fixed;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  filter: blur(160px);
+  opacity: 0.15;
+  z-index: -3;
+  pointer-events: none;
+}
+
+#globe-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 0.9rem;
-  background: #7c6ef7;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.btn-primary:hover:not(:disabled) { background: #6a5ce6; }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-secondary {
-  padding: 0.6rem 1.2rem;
-  background: transparent;
-  color: #7c6ef7;
-  border: 1px solid #7c6ef7;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 1rem;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(circle at center, #12131c 0%, #0d0e17 100%);
 }
 
-/* ── Badges ─────────────────────────────── */
-.badges-grid { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(2deg); }
+}
+
+/* ── Typography size classes ─────────────────────────────────────────── */
+.text-body-lg { font-size: 18px; line-height: 28px; font-weight: 400; }
+.text-body-md { font-size: 16px; line-height: 24px; font-weight: 400; }
+.text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+.text-display-lg-mobile { font-size: 40px; line-height: 48px; letter-spacing: -0.02em; font-weight: 700; }
+.text-headline-lg { font-size: 32px; line-height: 40px; letter-spacing: -0.01em; font-weight: 600; }
+.text-display-lg { font-size: 64px; line-height: 72px; letter-spacing: -0.02em; font-weight: 700; }
+.text-label-sm { font-size: 12px; line-height: 16px; font-weight: 500; }
+
+/* ── Component styles for React ──────────────────────────────────────── */
+.wallet-connect { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.connected {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: "JetBrains Mono", monospace; font-size: 13px;
+  color: #c9c4d8; background: rgba(255,255,255,0.05);
+  padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.08);
+}
+.dot.green { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; box-shadow: 0 0 12px rgba(76, 175, 80, 0.5); }
+
+.cause-card {
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px;
+  cursor: pointer; transition: all 0.3s ease; background: rgba(255,255,255,0.03);
+}
+.cause-card:hover { border-color: rgba(202,190,255,0.3); background: rgba(202,190,255,0.05); transform: translateY(-2px); }
+.cause-card.selected { border-color: #947dff; background: rgba(148,125,255,0.1); box-shadow: 0 0 40px rgba(148,125,255,0.15); }
+
 .badge-card {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  background: #1a1a2e;
-  border: 1px solid #2a2a4e;
-  border-radius: 12px;
-  padding: 0.8rem 1.2rem;
+  display: flex; align-items: center; gap: 16px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 16px 24px; transition: all 0.3s ease;
 }
-.badge-emoji { font-size: 2rem; }
-.badge-cause { font-weight: 600; text-transform: capitalize; }
-.badge-id { font-size: 0.75rem; color: #666; }
-.empty-state { color: #555; padding: 2rem 0; }
+.badge-card:hover { background: rgba(148,125,255,0.08); border-color: rgba(202,190,255,0.2); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(148,125,255,0.1); }
 
-/* ── Status & Misc ──────────────────────── */
-.wallet-connect { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
-.connected { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
-.dot.green { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; }
-.error { color: #ff6b6b; font-size: 0.85rem; margin-top: 0.5rem; }
-.success-box h2 { color: #4caf50; margin-bottom: 0.8rem; }
-.badge-hint { color: #7c6ef7; margin-top: 1rem; font-size: 0.9rem; }
-.small { font-size: 0.75rem; color: #666; }
-.small a { color: #7c6ef7; }
-.steps-display { text-align: center; color: #888; font-size: 0.8rem; margin-top: 0.8rem; }
-.loading { color: #888; }
-.donate-btn { margin-top: 0; }
-
-.app-footer { text-align: center; padding: 2rem; color: #444; font-size: 0.8rem; }
-
-@media (max-width: 768px) {
-  .dashboard { grid-template-columns: 1fr; }
-  .hero h1 { font-size: 1.8rem; }
-  .app-header { flex-direction: column; gap: 0.8rem; }
-  .tagline { display: none; }
+.spinner {
+  display: inline-block; width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+  vertical-align: middle; margin-left: 8px;
 }
+@keyframes spin { to { transform: rotate(360deg); } }

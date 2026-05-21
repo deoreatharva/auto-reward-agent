@@ -52,35 +52,37 @@ export default function DonationForm({ signer, onDonated }) {
 
   if (status === "success") {
     return (
-      <div className="success-box">
-        <h2>🎉 Donation Successful!</h2>
-        <p>Your donation to <strong>{selectedCause}</strong> is on-chain.</p>
-        <p className="small">Tx: <a href={`https://sepolia.basescan.org/tx/${txHash}`} target="_blank">{txHash?.slice(0, 20)}...</a></p>
-        <p className="badge-hint">🤖 Agent detected your donation. Minting your badge...</p>
+      <div className="text-center space-y-4">
+        <h2 className="font-headline-lg text-headline-md text-secondary-container font-bold">🎉 Donation Successful!</h2>
+        <p className="text-on-surface">Your donation to <strong className="text-primary">{selectedCause}</strong> is on-chain.</p>
+        <p className="font-label-sm text-label-sm text-on-surface-variant opacity-60">
+          Tx: <a href={`https://sepolia.basescan.org/tx/${txHash}`} target="_blank" className="text-primary hover:underline">{txHash?.slice(0, 20)}...</a>
+        </p>
+        <p className="text-primary text-lg mt-4">🤖 Agent detected your donation. Minting your badge...</p>
       </div>
     );
   }
 
   return (
-    <div className="donation-form">
-      <h2>Choose a Cause</h2>
-      <p className="subtitle">No ETH needed — UGF handles gas for you</p>
+    <div>
+      <h2 className="font-headline-lg text-headline-md font-bold mb-2">Choose a Cause</h2>
+      <p className="font-label-sm text-label-sm text-on-surface-variant opacity-60 tracking-wider mb-6">No ETH needed — UGF handles gas for you</p>
 
-      <div className="causes-grid">
+      <div className="grid grid-cols-2 gap-3 mb-6">
         {CAUSES.map((cause) => (
           <div
             key={cause.id}
             className={`cause-card ${selectedCause === cause.id ? "selected" : ""}`}
             onClick={() => setSelectedCause(cause.id)}
           >
-            <div className="cause-label">{cause.label}</div>
-            <div className="cause-desc">{cause.description}</div>
+            <div className="font-headline-md font-semibold text-base mb-1">{cause.label}</div>
+            <div className="text-sm text-on-surface-variant opacity-70">{cause.description}</div>
           </div>
         ))}
       </div>
 
       <button
-        className="btn-primary donate-btn"
+        className="w-full bg-gradient-to-r from-primary to-tertiary text-on-primary font-bold py-4 px-8 text-lg rounded-2xl hover:shadow-[0_0_50px_rgba(202,190,255,0.5)] transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-40 disabled:cursor-not-allowed"
         onClick={handleDonate}
         disabled={!selectedCause || status === "loading"}
       >
@@ -92,12 +94,12 @@ export default function DonationForm({ signer, onDonated }) {
       </button>
 
       {status === "loading" && (
-        <div className="steps-display">
-          <p>🔐 Authenticating → 💬 Getting quote → ✍️ Signing → 🚀 Executing</p>
+        <div className="text-center mt-4">
+          <p className="text-on-surface-variant text-sm opacity-70">🔐 Authenticating → 💬 Getting quote → ✍️ Signing → 🚀 Executing</p>
         </div>
       )}
 
-      {error && <p className="error">{error}</p>}
+      {error && <p className="text-error text-sm mt-3 font-label-sm">{error}</p>}
     </div>
   );
 }

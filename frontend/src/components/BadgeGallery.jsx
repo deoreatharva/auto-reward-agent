@@ -80,34 +80,37 @@ export default function BadgeGallery({ signer, userAddress, newDonationMade }) {
   }
 
   return (
-    <div className="badge-gallery">
-      <h2>Your Badges</h2>
-      <p className="subtitle">Auto-minted by agent when you donate</p>
+    <div>
+      <h2 className="font-headline-lg text-headline-md font-bold mb-2">Your Badges</h2>
+      <p className="font-label-sm text-label-sm text-on-surface-variant opacity-60 tracking-wider mb-6">Auto-minted by agent when you donate</p>
 
-      {loading && <p className="loading">Checking your badges...</p>}
+      {loading && <p className="text-on-surface-variant opacity-60">Checking your badges...</p>}
 
       {!loading && badges.length === 0 && (
-        <div className="empty-state">
-          <p>No badges yet. Make a donation to earn your first one! 🎖️</p>
+        <div className="text-center py-12 text-on-surface-variant opacity-50">
+          <p className="text-lg">No badges yet. Make a donation to earn your first one! 🎖️</p>
         </div>
       )}
 
-      <div className="badges-grid">
+      <div className="flex flex-wrap gap-3">
         {badges.map((badge) => (
           <div key={badge.tokenId} className="badge-card">
-            <div className="badge-emoji">
+            <div className="text-4xl">
               {CAUSE_EMOJIS[badge.cause] || "🏅"}
             </div>
-            <div className="badge-info">
-              <div className="badge-cause">{badge.cause}</div>
-              <div className="badge-id">Badge #{badge.tokenId}</div>
+            <div>
+              <div className="font-headline-md font-semibold capitalize">{badge.cause}</div>
+              <div className="font-label-sm text-label-sm text-on-surface-variant opacity-60">Badge #{badge.tokenId}</div>
             </div>
           </div>
         ))}
       </div>
 
       {badges.length > 0 && (
-        <button className="btn-secondary" onClick={fetchBadges}>
+        <button
+          className="mt-4 bg-white/5 border border-white/10 text-on-surface font-bold py-3 px-8 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all duration-300 transform hover:-translate-y-1"
+          onClick={fetchBadges}
+        >
           Refresh
         </button>
       )}
