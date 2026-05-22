@@ -34,11 +34,13 @@ export default function DonationForm({ signer, onDonated }) {
 
       // call UGF — this handles auth, quote, settle, execute
       // user never touches ETH!
-      const hash = await executeGaslessly(
-        signer,
-        import.meta.env.VITE_DONATION_VAULT_ADDRESS,
-        encodedData
-      );
+     const signerAddress = signer.address;
+const hash = await executeGaslessly(
+  signer,
+  import.meta.env.VITE_DONATION_VAULT_ADDRESS,
+  encodedData,
+  signerAddress
+);
 
       setTxHash(hash);
       setStatus("success");

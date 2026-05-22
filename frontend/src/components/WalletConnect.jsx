@@ -19,7 +19,14 @@ export default function WalletConnect({ onConnected }) {
       }
 
       // ask MetaMask to connect
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      
+      
+      
+      const provider = new ethers.BrowserProvider(window.ethereum, {
+  chainId: 84532,
+  name: "base-sepolia",
+  ensAddress: null
+});
       await provider.send("eth_requestAccounts", []);
 
       // switch to Base Sepolia if not already on it
@@ -46,7 +53,7 @@ export default function WalletConnect({ onConnected }) {
 
       // get the signer (the actual wallet object we use for signing)
       const signer = await provider.getSigner();
-      const addr = await signer.getAddress();
+      const addr = signer.address;
 
       setAddress(addr);
       onConnected(signer, addr); // pass signer up to parent App

@@ -26,7 +26,7 @@ const BADGE_ABI = [
 // ── Setup ─────────────────────────────────────────────────────────────
 
 // provider connects to Base Sepolia (read-only, for listening to events)
-const provider = new ethers.JsonRpcProvider("https://sepolia.base.org");
+const provider = new ethers.WebSocketProvider("https://base-sepolia.g.alchemy.com/v2/ypGpKXbHaD2XqQtVnCWCx");
 
 // CRITICAL: agent wallet MUST have provider attached — UGF throws NO_PROVIDER otherwise
 const agentWallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY, provider);
