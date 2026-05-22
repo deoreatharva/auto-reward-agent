@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 
 // Lets user connect their MetaMask wallet
 // Returns the signer (wallet) and address up to the parent component
-export default function WalletConnect({ onConnected, variant = "default" }) {
+export default function WalletConnect({ onConnected, buttonClassName }) {
   const [address, setAddress] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,7 +19,14 @@ export default function WalletConnect({ onConnected, variant = "default" }) {
       }
 
       // ask MetaMask to connect
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      
+      
+      
+      const provider = new ethers.BrowserProvider(window.ethereum, {
+  chainId: 84532,
+  name: "base-sepolia",
+  ensAddress: null
+});
       await provider.send("eth_requestAccounts", []);
 
       // switch to Base Sepolia if not already on it
@@ -46,7 +53,7 @@ export default function WalletConnect({ onConnected, variant = "default" }) {
 
       // get the signer (the actual wallet object we use for signing)
       const signer = await provider.getSigner();
-      const addr = await signer.getAddress();
+      const addr = signer.address;
 
       setAddress(addr);
       onConnected(signer, addr); // pass signer up to parent App
@@ -62,38 +69,19 @@ export default function WalletConnect({ onConnected, variant = "default" }) {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   }
 
-  let btnClasses = "";
-  if (variant === "hero-ghost") {
-    btnClasses = "w-full sm:w-auto bg-white/5 border border-white/10 text-on-surface font-bold py-4 px-12 md:py-5 md:px-14 text-lg md:text-xl rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all duration-500 transform hover:-translate-y-1.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed";
-  } else if (variant === "nav") {
-    btnClasses = "bg-gradient-to-r from-primary to-tertiary text-on-primary font-bold py-2 px-6 rounded-xl hover:shadow-[0_0_30px_rgba(202,190,255,0.4)] transition-all duration-500 transform hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed";
-  } else {
-    // default (e.g. earlier usages if any)
-    btnClasses = "w-full sm:w-auto bg-gradient-to-r from-primary to-tertiary text-on-primary font-bold py-6 px-16 text-xl rounded-2xl hover:shadow-[0_0_50px_rgba(202,190,255,0.5)] transition-all duration-500 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed";
-  }
-
   return (
     <div className="wallet-connect">
       {address ? (
         <div className="connected">
           <span className="dot green" />
-          <span>{shortAddr(address)}</span>
+          <span>Connected: {shortAddr(address)}</span>
         </div>
       ) : (
-        <button
-          onClick={connect}
-          disabled={loading}
-          id="connect-wallet-btn"
-          className={btnClasses}
-        >
-          {loading ? (
-            <span>Connecting... <span className="spinner" /></span>
-          ) : (
-            "Connect Wallet"
-          )}
+        <button onClick={connect} disabled={loading} className={buttonClassName || "btn-primary"}>
+          {loading ? "Connecting..." : "Connect Wallet"}
         </button>
       )}
-      {error && <p className="text-error text-sm mt-2 font-label-sm">{error}</p>}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 }
