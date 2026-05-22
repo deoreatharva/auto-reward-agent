@@ -1,0 +1,100 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  darkMode: "class",
+  theme: {
+      extend: {
+          colors: {
+              "on-tertiary": "#003549",
+              "surface-dim": "#19120c",
+              surface: "#19120c",
+              "on-tertiary-fixed": "#001e2c",
+              "surface-variant": "#3c332c",
+              "surface-bright": "#403830",
+              outline: "#a08d7d",
+              "secondary-container": "#634220",
+              "surface-container-lowest": "#130d07",
+              "on-background": "#eee0d5",
+              "primary-fixed-dim": "#ffb870",
+              "tertiary-fixed-dim": "#79d1ff",
+              "surface-tint": "#ffb870",
+              "secondary-fixed": "#ffdcbf",
+              "on-error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#004c68",
+              secondary: "#eebd91",
+              "on-surface": "#eee0d5",
+              tertiary: "#79d1ff",
+              "secondary-fixed-dim": "#eebd91",
+              "inverse-on-surface": "#372f28",
+              "on-surface-variant": "#d8c3b1",
+              "inverse-primary": "#8b5000",
+              "surface-container-low": "#211a14",
+              "on-error": "#690005",
+              background: "#19120c",
+              "surface-container": "#251e18",
+              "on-primary-fixed": "#2c1600",
+              "tertiary-container": "#209bcc",
+              "outline-variant": "#534437",
+              "on-tertiary-container": "#002d40",
+              "tertiary-fixed": "#c3e8ff",
+              "primary-fixed": "#ffdcbe",
+              primary: "#ffb870",
+              "surface-container-high": "#302922",
+              "on-secondary-fixed": "#2d1600",
+              "on-primary-fixed-variant": "#693c00",
+              "surface-container-highest": "#3c332c",
+              "on-secondary-fixed-variant": "#61401e",
+              "primary-container": "#cc7f24",
+              "on-primary-container": "#402300",
+              "on-primary": "#4a2800",
+              "error-container": "#93000a",
+              "inverse-surface": "#eee0d5",
+              "on-secondary-container": "#deaf84",
+              "on-secondary": "#472a09",
+              error: "#ffb4ab"
+          },
+          borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px"
+          },
+          spacing: {
+              xl: "80px",
+              gutter: "24px",
+              xs: "8px",
+              "margin-mobile": "20px",
+              md: "24px",
+              "margin-desktop": "64px",
+              sm: "16px",
+              base: "4px",
+              lg: "48px"
+          },
+          fontFamily: {
+              "headline-lg": ["Bebas Neue"],
+              "label-sm": ["Poiret One"],
+              "headline-md": ["Bebas Neue"],
+              "body-lg": ["Inter"],
+              "headline-lg-mobile": ["Bebas Neue"],
+              "display-lg": ["Bebas Neue"],
+              "body-md": ["Inter"],
+              headline: ["Bebas Neue"],
+              display: ["Bebas Neue"],
+              body: ["Inter"],
+              label: ["Poiret One"]
+          },
+          fontSize: {
+              "headline-lg": ["40px", {lineHeight: "1.2", fontWeight: "400"}],
+              "label-sm": ["12px", {lineHeight: "1.0", letterSpacing: "0.1em", fontWeight: "400"}],
+              "headline-md": ["24px", {lineHeight: "1.4", fontWeight: "400"}],
+              "body-lg": ["18px", {lineHeight: "1.6", fontWeight: "400"}],
+              "headline-lg-mobile": ["32px", {lineHeight: "1.2", fontWeight: "400"}],
+              "display-lg": ["64px", {lineHeight: "1.1", letterSpacing: "0.05em", fontWeight: "400"}],
+              "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}]
+          }
+      }
+  }
+}

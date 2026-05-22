@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 
 // Lets user connect their MetaMask wallet
 // Returns the signer (wallet) and address up to the parent component
-export default function WalletConnect({ onConnected }) {
+export default function WalletConnect({ onConnected, buttonClassName }) {
   const [address, setAddress] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -77,7 +77,7 @@ export default function WalletConnect({ onConnected }) {
           <span>Connected: {shortAddr(address)}</span>
         </div>
       ) : (
-        <button onClick={connect} disabled={loading} className="btn-primary">
+        <button onClick={connect} disabled={loading} className={buttonClassName || "btn-primary"}>
           {loading ? "Connecting..." : "Connect Wallet"}
         </button>
       )}

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoReward | Web3 Philanthropy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;family=Poiret+One:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#003549",
+                        "surface-dim": "#19120c",
+                        surface: "#19120c",
+                        "on-tertiary-fixed": "#001e2c",
+                        "surface-variant": "#3c332c",
+                        "surface-bright": "#403830",
+                        outline: "#a08d7d",
+                        "secondary-container": "#634220",
+                        "surface-container-lowest": "#130d07",
+                        "on-background": "#eee0d5",
+                        "primary-fixed-dim": "#ffb870",
+                        "tertiary-fixed-dim": "#79d1ff",
+                        "surface-tint": "#ffb870",
+                        "secondary-fixed": "#ffdcbf",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#004c68",
+                        secondary: "#eebd91",
+                        "on-surface": "#eee0d5",
+                        tertiary: "#79d1ff",
+                        "secondary-fixed-dim": "#eebd91",
+                        "inverse-on-surface": "#372f28",
+                        "on-surface-variant": "#d8c3b1",
+                        "inverse-primary": "#8b5000",
+                        "surface-container-low": "#211a14",
+                        "on-error": "#690005",
+                        background: "#19120c",
+                        "surface-container": "#251e18",
+                        "on-primary-fixed": "#2c1600",
+                        "tertiary-container": "#209bcc",
+                        "outline-variant": "#534437",
+                        "on-tertiary-container": "#002d40",
+                        "tertiary-fixed": "#c3e8ff",
+                        "primary-fixed": "#ffdcbe",
+                        primary: "#ffb870",
+                        "surface-container-high": "#302922",
+                        "on-secondary-fixed": "#2d1600",
+                        "on-primary-fixed-variant": "#693c00",
+                        "surface-container-highest": "#3c332c",
+                        "on-secondary-fixed-variant": "#61401e",
+                        "primary-container": "#cc7f24",
+                        "on-primary-container": "#402300",
+                        "on-primary": "#4a2800",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#eee0d5",
+                        "on-secondary-container": "#deaf84",
+                        "on-secondary": "#472a09",
+                        error: "#ffb4ab"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        xl: "80px",
+                        gutter: "24px",
+                        xs: "8px",
+                        "margin-mobile": "20px",
+                        md: "24px",
+                        "margin-desktop": "64px",
+                        sm: "16px",
+                        base: "4px",
+                        lg: "48px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["Bebas Neue"],
+                        "label-sm": ["Poiret One"],
+                        "headline-md": ["Bebas Neue"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Bebas Neue"],
+                        "display-lg": ["Bebas Neue"],
+                        "body-md": ["Inter"],
+                        headline: ["Bebas Neue"],
+                        display: ["Bebas Neue"],
+                        body: ["Inter"],
+                        label: ["Poiret One"]
+                    },
+                    fontSize: {
+                        "headline-lg": ["40px", {lineHeight: "1.2", fontWeight: "400"}],
+                        "label-sm": ["12px", {lineHeight: "1.0", letterSpacing: "0.1em", fontWeight: "400"}],
+                        "headline-md": ["24px", {lineHeight: "1.4", fontWeight: "400"}],
+                        "body-lg": ["18px", {lineHeight: "1.6", fontWeight: "400"}],
+                        "headline-lg-mobile": ["32px", {lineHeight: "1.2", fontWeight: "400"}],
+                        "display-lg": ["64px", {lineHeight: "1.1", letterSpacing: "0.05em", fontWeight: "400"}],
+                        "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+
+        .glass-surface {
+            background: rgba(25, 25, 25, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .primary-glow {
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
+        }
+
+        .aura-orange {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 140, 0, 0.15) 0%, transparent 70%);
+        }
+
+        .aura-silver {
+            background: radial-gradient(circle at 50% 50%, rgba(198, 198, 198, 0.1) 0%, transparent 70%);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .text-3d-metallic {
+            background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 50%, #ffffff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 1px 0px #888, 0px 2px 0px #777, 0px 3px 0px #666, 0px 4px 0px #555, 0px 5px 10px rgba(0,0,0,0.4);
+        }
+
+        .text-3d-primary {
+            background: linear-gradient(to bottom, #ffdcbe 0%, #ffb870 50%, #cc7f24 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 1px 0px #cc7f24, 0px 2px 0px #8b5000, 0px 3px 0px #4a2800, 0px 4px 10px rgba(0,0,0,0.5);
+        }
+
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 10px rgba(192, 117, 25, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(192, 117, 25, 0.7); }
+            100% { box-shadow: 0 0 10px rgba(192, 117, 25, 0.4); }
+        }
+
+        .animate-glow-pulse {
+            animation: glow-pulse 2s infinite ease-in-out;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 30px rgba(192, 117, 25, 0.8);
+        }
+
+        /* 3D Globe Styles */
+        .globe-container {
+            perspective: 1200px;
+            width: 500px;
+            height: 500px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .globe-atmosphere {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(121, 209, 255, 0.3) 0%, transparent 70%);
+            filter: blur(20px);
+            z-index: 5;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .active-interaction .globe-atmosphere {
+            background: radial-gradient(circle, rgba(121, 209, 255, 0.45) 0%, transparent 75%);
+            filter: blur(30px);
+            width: 460px;
+            height: 460px;
+        }
+
+        .globe-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(50px);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 30;
+            white-space: nowrap;
+            text-align: center;
+            pointer-events: none;
+            filter: blur(10px);
+        }
+
+        .active-interaction .globe-logo {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateZ(100px) scale(1.1);
+            text-shadow: 0 0 20px rgba(121, 209, 255, 0.6);
+            filter: blur(0px);
+        }
+
+        .globe-canvas-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        #globe-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .globe-rim-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 60px rgba(121, 209, 255, 0.5), 0 0 40px rgba(121, 209, 255, 0.3);
+            border: 2px solid rgba(121, 209, 255, 0.4);
+            z-index: 10;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<div class="text-headline-md font-headline-md font-bold tracking-tighter text-on-surface dark:text-on-surface flex items-center gap-2 flex-1">
+<span class="material-symbols-outlined text-primary" style='font-variation-settings: "FILL" 1;'>toll</span>
+            AutoReward
+        </div>
+<div class="hidden md:flex items-center gap-xl flex-1 justify-end">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Donate</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">About</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">FAQ</a>
+</div>
+</div>
+</nav>
+<!-- Background Auras -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+<div class="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] aura-orange"></div>
+<div class="absolute top-[40%] -right-[10%] w-[50%] h-[50%] aura-silver"></div>
+<div class="absolute -bottom-[10%] left-[20%] w-[40%] h-[40%] aura-orange opacity-50"></div>
+</div>
+<main class="relative pt-32">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop pb-xl grid grid-cols-1 lg:grid-cols-2 gap-lg items-center min-h-[600px]">
+<div class="space-y-md z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Powered UGF &amp; SYNTAX SQUAD</span>
+</div>
+<h1 class="font-display-lg text-display-lg md:text-[72px] leading-tight text-on-surface">
+<span class="text-3d-metallic">Web3 Giving,</span> <span class="text-3d-primary">Without</span> <span class="text-3d-metallic">the Gas Pain</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                Connect your wallet and donate to a cause. Our agent automatically mints you an NFT badge — all without needing ETH for gas. Empowering decentralized philanthropy.
+            </p>
+<div class="flex flex-wrap gap-md pt-base">
+<button class="bg-primary-container text-on-primary-container px-8 py-3 rounded-full font-headline-md text-[16px] font-bold hover:opacity-80 transition-all duration-300 active:scale-95 primary-glow animate-glow-pulse hover-lift group" id="cta-button">
+                    Connect Wallet
+                </button>
+</div>
+</div>
+<!-- High-Fidelity 3D Globe Section -->
+<div class="relative flex justify-center items-center h-full min-h-[500px]">
+<div class="globe-container group cursor-pointer" id="interactive-globe">
+<div class="globe-atmosphere"></div>
+<div class="globe-rim-glow"></div>
+<div class="globe-logo">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-[48px]" style='font-variation-settings: "FILL" 1;'>toll</span>
+<span class="font-headline-md text-tertiary text-2xl tracking-[0.2em] font-bold">AUTOREWARD</span>
+</div>
+</div>
+<div class="globe-canvas-wrapper">
+<canvas id="globe-canvas"></canvas>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Bento Grid -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<div class="flex items-end justify-between mb-lg">
+<div class="space-y-base">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Precision Protocols</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Built on the Universal Gas Framework for seamless transactions.</p>
+</div>
+<div class="hidden md:flex items-center gap-xs font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+                SCROLL DOWN
+            </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Card 1: Secure -->
+<div class="glass-surface p-lg rounded-xl transition-all duration-500 hover:border-primary/40 group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-[32px]">verified_user</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Secure</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Every step in the fintech network is strongly secured by cryptographic primitives and economic guarantees.
+                </p>
+<div class="mt-lg h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-gradient-to-r from-primary to-primary-container"></div>
+</div>
+</div>
+<!-- Card 2: Fast -->
+<div class="glass-surface p-lg rounded-xl transition-all duration-500 hover:border-primary/40 group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-[32px]">bolt</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Fast</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Provides low latency for on-chain actions via our optimized relayer network. Global execution in milliseconds.
+                </p>
+<div class="mt-lg h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[92%] bg-gradient-to-r from-primary to-primary-container"></div>
+</div>
+</div>
+<!-- Card 3: Gas-Free -->
+<div class="glass-surface p-lg rounded-xl transition-all duration-500 hover:border-primary/40 group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-[32px]">magic_button</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Gas-Free</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Our agent handles all gas fees for you via UGF, so you can focus on giving. No native tokens required.
+                </p>
+<div class="mt-lg h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[100%] bg-gradient-to-r from-primary to-primary-container"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Stats Area -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<div class="glass-surface rounded-xl overflow-hidden relative p-lg md:p-xl flex flex-col md:flex-row items-center justify-between gap-lg">
+<div class="absolute top-0 right-0 w-1/3 h-full aura-orange -z-10"></div>
+<div class="space-y-md">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">The Future of <br/><span class="text-primary">Impact Management</span></h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Real-time transparency on every donation, tracked and verified on-chain with instant NFT rewards for all contributors.</p>
+</div>
+<div class="grid grid-cols-2 gap-lg w-full md:w-auto">
+<div class="text-center md:text-left">
+<div class="font-display-lg text-[48px] text-primary">1</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Donations Processed</div>
+</div>
+<div class="text-center md:text-left">
+<div class="font-display-lg text-[48px] text-tertiary">$0.00</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">User Gas Fees</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-lg mt-xl bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="text-headline-md font-headline-md font-bold text-on-surface mb-sm">AutoReward</div>
+<p class="text-body-md font-body-md text-on-surface-variant">© 2026 AutoReward. Empowering decentralized philanthropy.</p>
+</div>
+<div class="space-y-sm"></div>
+<div class="space-y-sm">
+<h4 class="font-headline-md text-[18px] text-on-surface">Resources</h4>
+<div class="flex flex-col gap-base">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200 hover:translate-x-1" href="#">Docs</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200 hover:translate-x-1" href="#">Powered by UGF</a>
+</div>
+</div>
+<div class="space-y-sm">
+<h4 class="font-headline-md text-[18px] text-on-surface">Legal</h4>
+<div class="flex flex-col gap-base">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200 hover:translate-x-1" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200 hover:translate-x-1" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    // Parallax effect for auras
+    document.addEventListener('mousemove', (e) => {
+        const auras = document.querySelectorAll('.aura-orange, .aura-silver');
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        auras.forEach(aura => {
+            const speed = 20;
+            aura.style.transform = `translate(${(x - 0.5) * speed}px, ${(y - 0.5) * speed}px)`;
+        });
+    });
+
+    // High-Fidelity Particle Globe Implementation
+    const canvas = document.getElementById('globe-canvas');
+    const ctx = canvas.getContext('2d');
+    const globe = document.getElementById('interactive-globe');
+    const ctaButton = document.getElementById('cta-button');
+    
+    let width, height;
+    let particles = [];
+    let connections = [];
+    let rotation = 0;
+    let targetRotationSpeed = 0.005;
+    let currentRotationSpeed = 0.005;
+    let isInteracting = false;
+
+    function resize() {
+        width = globe.offsetWidth;
+        height = globe.offsetHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor(theta, phi) {
+            this.theta = theta;
+            this.phi = phi;
+            this.radius = 160;
+        }
+
+        project() {
+            const rotatedPhi = this.phi + rotation;
+            const x = this.radius * Math.sin(this.theta) * Math.cos(rotatedPhi);
+            const y = this.radius * Math.cos(this.theta);
+            const z = this.radius * Math.sin(this.theta) * Math.sin(rotatedPhi);
+            
+            // Project 3D to 2D
+            const scale = 500 / (500 + z);
+            return {
+                x: width / 2 + x * scale,
+                y: height / 2 + y * scale,
+                z: z,
+                visible: z < 0 // Only show front half for cleaner look or adjust opacity
+            };
+        }
+    }
+
+    class Connection {
+        constructor() {
+            this.reset();
+        }
+
+        reset() {
+            this.theta1 = Math.random() * Math.PI;
+            this.phi1 = Math.random() * Math.PI * 2;
+            this.theta2 = Math.random() * Math.PI;
+            this.phi2 = Math.random() * Math.PI * 2;
+            this.progress = 0;
+            this.speed = 0.002 + Math.random() * 0.005;
+            this.life = 0;
+            this.maxLife = 100 + Math.random() * 200;
+        }
+
+        update() {
+            const boost = isInteracting ? 4 : 1;
+            this.progress += this.speed * boost;
+            if (this.progress > 1) this.reset();
+        }
+
+        draw() {
+            const rotatedPhi1 = this.phi1 + rotation;
+            const rotatedPhi2 = this.phi2 + rotation;
+            
+            const p1 = this.getPoint(this.theta1, rotatedPhi1, 190);
+            const p2 = this.getPoint(this.theta2, rotatedPhi2, 190);
+
+            // Control point for arc (pushed out)
+            const midTheta = (this.theta1 + this.theta2) / 2;
+            const midPhi = (rotatedPhi1 + rotatedPhi2) / 2;
+            const cp = this.getPoint(midTheta, midPhi, 280);
+
+            if (p1.z > 50 && p2.z > 50) return; // Cull if too far back
+
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.quadraticCurveTo(cp.x, cp.y, p2.x, p2.y);
+            
+            const alpha = isInteracting ? 0.9 : 0.5;
+            const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+            gradient.addColorStop(0, `rgba(121, 209, 255, 0)`);
+            gradient.addColorStop(Math.max(0, this.progress - 0.2), `rgba(121, 209, 255, ${alpha})`);
+            gradient.addColorStop(this.progress, `rgba(121, 209, 255, 0)`);
+            
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = isInteracting ? 2 : 1.5;
+            ctx.stroke();
+
+            // Head particle
+            const t = this.progress;
+            const hx = Math.pow(1 - t, 2) * p1.x + 2 * (1 - t) * t * cp.x + Math.pow(t, 2) * p2.x;
+            const hy = Math.pow(1 - t, 2) * p1.y + 2 * (1 - t) * t * cp.y + Math.pow(t, 2) * p2.y;
+            
+            ctx.beginPath();
+            ctx.arc(hx, hy, isInteracting ? 2.5 : 2, 0, Math.PI * 2);
+            ctx.fillStyle = '#79d1ff';
+            ctx.shadowBlur = isInteracting ? 15 : 5;
+            ctx.shadowColor = '#79d1ff';
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        getPoint(theta, phi, r = 160) {
+            const x = r * Math.sin(theta) * Math.cos(phi);
+            const y = r * Math.cos(theta);
+            const z = r * Math.sin(theta) * Math.sin(phi);
+            const scale = 500 / (500 + z);
+            return { x: width / 2 + x * scale, y: height / 2 + y * scale, z: z };
+        }
+    }
+
+    // Initialize Particles (Dot Grid)
+    function init() {
+        particles = [];
+        const rows = 45;
+        const cols = 90;
+        for (let i = 0; i < rows; i++) {
+            const theta = (i / rows) * Math.PI;
+            for (let j = 0; j < cols; j++) {
+                const phi = (j / cols) * Math.PI * 2;
+                // Add some map-like distribution logic (simplified)
+                // Roughly keeping points that might resemble continents
+                const lat = (i / rows) * 180 - 90;
+                const lon = (j / cols) * 360 - 180;
+                
+                // Noise or simple continent mask logic can go here
+                // For high-fidelity visual, we use a dense grid and vary size
+                particles.push(new Particle(theta, phi));
+            }
+        }
+
+        for (let i = 0; i < 25; i++) {
+            connections.push(new Connection());
+        }
+    }
+    init();
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        // Update rotation
+        const targetSpeed = isInteracting ? 0.025 : 0.005;
+        currentRotationSpeed += (targetSpeed - currentRotationSpeed) * 0.05;
+        rotation += currentRotationSpeed;
+
+        // Draw Globe Dots
+        particles.forEach(p => {
+            const proj = p.project();
+            // Cull back face dots to keep it clean and performant
+            if (proj.z > 0) return;
+
+            const alpha = Math.abs(proj.z) / 160; // Faded as it goes to edge
+            ctx.beginPath();
+            ctx.arc(proj.x, proj.y, isInteracting ? 1.2 : 1.0, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(121, 209, 255, ${alpha * 0.9})`;
+            ctx.fill();
+        });
+
+        // Draw Arcs
+        connections.forEach(c => {
+            c.update();
+            c.draw();
+        });
+
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Interaction handling
+    const toggleInteraction = (active) => {
+        if (isInteracting === active) return;
+        isInteracting = active;
+        if (active) {
+            globe.classList.add('active-interaction');
+        } else {
+            globe.classList.remove('active-interaction');
+        }
+    };
+
+    globe.addEventListener('mouseenter', () => toggleInteraction(true));
+    globe.addEventListener('mouseleave', () => toggleInteraction(false));
+    ctaButton.addEventListener('mouseenter', () => toggleInteraction(true));
+    ctaButton.addEventListener('mouseleave', () => toggleInteraction(false));
+</script>
+</body></html>
